@@ -1,0 +1,60 @@
+<!doctype html>
+<html data-ng-app="JukeTubeApp">
+  <head>
+    <meta charset="utf-8">
+    <title>JukeKluu</title>
+    <meta name="author" content="J. Thomas">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="icon" href="/favicon.ico">
+  </head>
+  <body data-ng-controller="VideosController">
+    <header>
+      <a href="/">
+      <img class="logo" src="img/logo.png" width="60" style=" position: absolute;top: 5px;margin-left: 36px;">
+      <h1 style="margin-left: 70px;">Juke<strong>Kluu</strong></h1>
+      </a>
+      <form id="search" data-ng-submit="search()">
+        <input id="query" name="q" type="text" placeholder="Search for a YouTube video" data-ng-model="query">
+        <input id="submit" type="image" src="img/search.png" alt="Search">
+      </form>
+
+    </header>
+    <div id="results">
+      <div class="video" data-ng-repeat="video in results" data-ng-click="queue(video.id, video.title)">
+        <img class="video-image" data-ng-src="{{ video.thumbnail }}">
+        <p class="video-title">{{ video.title }}</p>
+        <p class="video-author">{{ video.author }}</p>
+        <p class="video-description">{{ video.description }}</p>
+      </div>
+    </div>
+    <div id="player">
+      <div id="placeholder"></div>
+    </div>
+    <div id="playlist">
+      <p id="current">{{ youtube.videoTitle }}</p>
+      <ol id="upcoming" data-ng-show="playlist">
+        <li data-ng-repeat="video in upcoming" ng-animate="'video'">
+          <p class="item-delete" data-ng-click="delete(upcoming, video.id)">delete</p>
+            <p class="item-delete" data-ng-click="videoUp($index)" ng-show="rearreng">Up</p>
+              <p class="item-delete" data-ng-click="videoDown($index)" ng-show="rearreng">Down</p>
+          <p class="item-title" data-ng-click="launch(video.id, video.title)">{{video.title}}</p>
+        </li>
+      </ol>
+      <ol id="history" data-ng-hide="playlist">
+        <li data-ng-repeat="video in history">
+          <p class="item-delete" data-ng-click="delete(history, video.id)">delete</p>
+          <p class="item-title" data-ng-click="queue(video.id, video.title)">{{video.title}}</p>
+        </li>
+      </ol>
+      <p id="tabs">
+        <a ng-class="{on:playlist}" data-ng-click="tabulate(true)">Upcoming</a>
+        <a ng-class="{on:!playlist}" data-ng-click="tabulate(false)">History</a>
+      </p>
+    </div>
+    <script src="angular.min.js"></script>
+    <script src="angular-local-storage.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
